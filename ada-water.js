@@ -5,23 +5,27 @@ AFRAME.registerPrimitive('a-water', {
     "water-helper": "",
     geometry: {
       primitive: "plane",
-      segmentsWidth: "100",
-      segmentsHeight: "100" ,
-      width:"100",
-      height:"100",
+      segmentsWidth: "10",
+      segmentsHeight: "10" ,
+      width:"10",
+      height:"10",
     },
-    scale: "5 2 1",//{x:20, y:20, z:20} , // note that the third value affects wave height scale, not the second
-    rotation: "-90 0 0", //{x:-90, y:0, z:0},
+    scale: "1 1 1",//{x:20, y:20, z:20} , // note that the third value affects wave height scale, not the second
+    rotation: "-90 0 0", 
     material: { shader:'water', transparent:true, repeat:'100' },
-    shadow: {receive: true}
+    shadow: {receive: true},
+    position: '0 0 -1',
   },
   mappings: {
+    primitive: 'geometry.primitive',
     width: 'geometry.width',
     length: 'geometry.height',
+    side: 'material.side',
     repeat: 'material.repeat',
-    color: 'ocean.color', // todo... I think I might have to register a new shader every time to do this?
-    opacity: 'material.opacity', // todo: test
-    'voronoi-points': 'water-helper.voronoiPoints',
+    color: 'material.basecolor',
+    'base-color': 'material.basecolor',
+    'foam-color': 'material.foamcolor',
+    'voronoi-points': 'water-helper.voronoiPoints', // can only be set at init
   }
 })
 
@@ -30,7 +34,6 @@ AFRAME.registerComponent("water-helper", {
     voronoiPoints: { default: 15, type: 'number' },
   },
   async init() {
-    // const {generateCausticCanvasTexture} = await import("./waterTexture.js");
     this.el.setAttribute('material', 'map', generateCausticCanvasTexture(this.data.voronoiPoints));
   }
 });
