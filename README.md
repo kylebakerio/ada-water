@@ -26,7 +26,7 @@ This component give you a simple primitive
 </html>
 ```
 
-You can experiment with animation settings on it as well:
+You can experiment with adding another layer of animation on it:
 ```js
 document.querySelector('a-water').setAttribute('animation', {
     property: 'scale', 
@@ -38,3 +38,19 @@ document.querySelector('a-water').setAttribute('animation', {
     easing: "easeOutElastic",
 })
 ```
+
+
+Added most of the bindings I could imagine someone wanting.
+
+| Attribute    | Default              | Description |
+| :---         |     :---:            |          :--- |
+| width        | 10 (meters)    | git status    |
+| length       | 10 (meters)       | git diff      |
+| side     |  one of ["front", "back", "double"]       | whether to be visible from under the water as well      |
+| base-color     | darkblue       | primary surface color      |
+| foam-color     | white       | secondary surface color     |
+| voronoi-points     | 15       | changes the shape of the 'foam'; try e.g. 50      |
+
+
+
+You can also check ada-water.js for the up-to-date props in case I forget to update the readme when making a minor tweak.
