@@ -46,7 +46,7 @@ document.querySelector('a-water').setAttribute('animation', {
 ```
 
 
-Added most of the bindings I could imagine someone wanting.
+Added the primitive bindings you're most likely to want.
 
 | Attribute    | Default              | Description |
 | :---         |     :---:            |          :--- |
@@ -55,7 +55,7 @@ Added most of the bindings I could imagine someone wanting.
 | side     |  one of ["front", "back", "double"]       | whether to be visible from under the water as well      |
 | base-color     | darkblue       | primary surface color      |
 | foam-color     | white       | secondary surface color     |
-| voronoi-points     | 15       | changes the shape of the 'foam'; try e.g. 50      |
+| voronoi-points     | 15       | changes the shape of the 'foam'; try e.g. 50. Note: can only be set at init! baked into the shader.      |
 
 
 
