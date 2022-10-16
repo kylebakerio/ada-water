@@ -2,7 +2,12 @@
 
 Based on the shader tutorial by ada, this component produces a very cheap large ocean that reminds one of the style of Wind Waker.
 
-This component give you a simple primitive
+This component give you a simple primitive that makes it easy to drop in and work with.
+
+Full credit to [Ada Rose](https://twitter.com/adarosecannon). This component packages everything into one file in a very basic, crude way to make importing it and using it as simple as possible, but if you want to go through the course of building this yourself from first principles, check out their multi-part series on the topic: https://medium.com/samsung-internet-dev/generating-a-water-effect-part-1-svg-and-canvas-2ad07060cc0d
+
+![image](https://user-images.githubusercontent.com/6391152/196059614-4b5144a4-882a-4105-86f1-1904d941fd3b.png)
+
 
 ```html
 <!DOCTYPE html>
@@ -25,6 +30,7 @@ This component give you a simple primitive
   </body>
 </html>
 ```
+
 
 You can experiment with adding another layer of animation on it:
 ```js
