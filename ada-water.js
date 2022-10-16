@@ -1,7 +1,6 @@
 /* global THREE AFRAME*/
 
 AFRAME.registerPrimitive('a-water', {
-  schema: {},
   defaultComponents: {
     "water-helper": "",
     geometry: {
@@ -16,12 +15,23 @@ AFRAME.registerPrimitive('a-water', {
     material: { shader:'water', transparent:true, repeat:'100' },
     shadow: {receive: true}
   },
+  mappings: {
+    width: 'geometry.width',
+    length: 'geometry.height',
+    repeat: 'material.repeat',
+    color: 'ocean.color', // todo... I think I might have to register a new shader every time to do this?
+    opacity: 'material.opacity', // todo: test
+    'voronoi-points': 'water-helper.voronoiPoints',
+  }
 })
 
 AFRAME.registerComponent("water-helper", {
+  schema: {
+    voronoiPoints: { default: 15, type: 'number' },
+  },
   async init() {
     // const {generateCausticCanvasTexture} = await import("./waterTexture.js");
-    this.el.setAttribute('material', 'map', generateCausticCanvasTexture(15));
+    this.el.setAttribute('material', 'map', generateCausticCanvasTexture(this.data.voronoiPoints));
   }
 });
 
