@@ -31,15 +31,3 @@ Full credit to [Ada Rose](https://twitter.com/adarosecannon). This component pac
 </html>
 ```
 
-You can experiment with animation settings on it as well:
-```js
-document.querySelector('a-water').setAttribute('animation', {
-    property: 'scale', 
-    from: '10 2 1',
-    to: '2 15 2',
-    dur: 200000,
-    loop: true,
-    dir: 'alternate',
-    easing: "easeOutElastic",
-})
-```
