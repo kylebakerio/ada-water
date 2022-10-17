@@ -58,6 +58,7 @@ Added the primitive bindings you're most likely to want.
 | opacity    | .5       | water opacity--note, this is baked into the shader, so cannot be changed after init!     |
 | voronoi-points     | 15       | changes the shape of the 'foam'; try e.g. 50. Note: can only be set at init! baked into the shader.      |
 
+
 You can also check ada-water.js for the up-to-date props in case I forget to update the readme when making a minor tweak.
 
 That ability to animated the colors is pretty handy, allowing you to make the illusion of the water responding to lighting conditions; see [this demo](/reactive-water.html) for an example of that behavior.
