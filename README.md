@@ -55,6 +55,7 @@ Added the primitive bindings you're most likely to want.
 | side     |  one of ["front", "back", "double"]       | whether to be visible from under the water as well      |
 | base-color     | darkblue       | primary surface color      |
 | foam-color     | white       | secondary surface color     |
+| opacity    | .5       | water opacity--note, this is baked into the shader, so cannot be changed after init!     |
 | voronoi-points     | 15       | changes the shape of the 'foam'; try e.g. 50. Note: can only be set at init! baked into the shader.      |
 
 
