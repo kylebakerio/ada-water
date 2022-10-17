@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/a-super-sky@1.1.1/super-sky.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/kylebakerio/ada-water/ada-water.js"></script>
+    <script src="https://unpkg.com/aframe-environment-component@1.3.1/dist/aframe-environment-component.min.js"></script>
+    <script>
+      // a hack to make get a hole cutout of the floor in the environment component.      
+      AFRAME.registerComponent('custom-behavior-setup', {
+        animateWater() {
+          // on 0 and 4, start animation
+          // that should last for 0 & 1
+          this.subSection = this.subSection+1 === 8 ? 0 : this.subSection+1;
+          let sec = this.subSection;
+          console.log(this.subSection)
+          if (sec === 0 || sec === 4) {
+            // more muted colors under the moon
+            this.water.setAttribute('animation','to', sec === 0 ? "#0006FF" : "#044875")
+            this.water.setAttribute('animation__2','to',sec === 0 ? "#B8B9F0" : "#919191")
+            
+            this.water.emit(`basestart`, null, false);
+            this.water.emit(`foamstart`, null, false);
+          }
+        },
+        init() {
+          let orbit = document.querySelector('a-super-sky').getAttribute('orbitduration');
+          let orbitInMs = orbit*60*1000;
+          let eighth = orbitInMs/4;
+          this.water = document.querySelector('a-water');
+          this.subSection = -1;
+          this.water.setAttribute('animation','dur',eighth)
+          this.water.setAttribute('animation__2','dur',eighth)
+          this.animateWater();
+          setInterval(this.animateWater.bind(this),eighth)
+          
+          // document.querySelector('[environment]').addEventListener('componentinitialized',evt => {
+            // if (evt.detail.name === "environment") {
+              setTimeout(() => {
+                  document.querySelector('.environmentGround').object3D.children[0].geometry = 
+                    document.querySelector('a-ring').object3D.children[1].geometry;
+                  // we want the dressing to have shadows, but we have to wait until after environment component has added the dressing
+                  document.querySelector('.environmentDressing').setAttribute('shadow', {receive:true, cast:true})
+                  // we have to steal back fog control from aframe-environment-component
+                  AFRAME.scenes[0].setAttribute('fog','color','black')
+              },1)
+            // }
+          // });
+          // return
+        }
+      })
+    </script>
+  </head>
+  <body>
+    <a-scene custom-behavior-setup>
+      <a-camera wasd-controls="fly:true;"></a-camera>
+      <a-entity position="0 0 0">
+        <a-box shadow="cast:true;" position="-1 -.25 -3" rotation="0 45 0" color="#4CC3D9"></a-box>
+        <a-sphere shadow="cast:true;" position="0 0 -5" radius="1.25" color="#EF2D5E"></a-sphere>
+        <a-cylinder shadow="cast:true;" position="1 0 -3" radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>
+        <a-plane position="0 -.75 -3" rotation="-90 0 0" height="20" width="20"></a-plane>
+      </a-entity>
+      
+      <!--    here we make a little pond cutout    -->
+      <a-ring position="0 0 0" rotation="-90 0 0" radius-inner="4.9" radius-outer="200" color="#7BC8A4">
+<!--         <a-sphere radius="-5" phi-length="180"></a-sphere> -->
+        <a-cone color="brown" rotation="-90 0 0" position="0 0 -2.5" height="5" radius-bottom="-5" side="double" phi-length="180"></a-cone>
+      </a-ring>
+      
+      <!--    then we add water    -->
+      <!--    the animation causes the water to look black during sunrise, then the blues become visible as the sun and moon rise    -->
+      <!--    needs improvement--in reality, should     -->
+      <a-water 
+               scale="20 20 1" opacity=".6" position="0 -.5 0" side="double" width="10" length="10" base-color="black" foam-color="black" repeat="10" voronoi-points="30"
+               animation="
+                 property: base-color;
+                 type: color;
+                 to: #0006FF;
+                 from: #000000;
+                 dur: 15000;
+                 dir: alternate;
+                 loop: 1;
+                 autoplay: false;
+                 startEvents: basestart;"
+               animation__2="
+                 property: foam-color;
+                 type: color;
+                 to: #B8B9F0;
+                 from: #383838;
+                 dur: 15000;
+                 dir: alternate;
+                 loop: 1;
+                 autoplay: false;
+                 startEvents: foamstart;"
+      ></a-water>
+      
+      <a-super-sky 
+        shadowsize="100"
+        startpercent=".0"
+        orbitduration=".25"
+        groundcolor="#7BC8A4"
+      ></a-super-sky>
+      
+      <a-entity environment="preset: forest; skyType: none; lighting:none; shadow:true; shadowSize:40;"></a-entity>
+    </a-scene>
+  </body>
+
+</html>
