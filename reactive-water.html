@@ -6,8 +6,12 @@
     <script src="https://cdn.jsdelivr.net/gh/kylebakerio/ada-water/ada-water.js"></script>
     <script src="https://unpkg.com/aframe-environment-component@1.3.1/dist/aframe-environment-component.min.js"></script>
     <script>
-      // a hack to make get a hole cutout of the floor in the environment component.      
       AFRAME.registerComponent('custom-behavior-setup', {
+      // a hack to make get a hole cutout of the floor in the environment component.      
+        init() {
+          this.setupWater();
+          this.hackEnvironment();
+        },
         animateWater() {
           // on 0 and 4, start animation
           // that should last for 0 & 1
@@ -23,7 +27,7 @@
             this.water.emit(`foamstart`, null, false);
           }
         },
-        init() {
+        setupWater() {
           let orbit = document.querySelector('a-super-sky').getAttribute('orbitduration');
           let orbitInMs = orbit*60*1000;
           let eighth = orbitInMs/4;
@@ -33,21 +37,17 @@
           this.water.setAttribute('animation__2','dur',eighth)
           this.animateWater();
           setInterval(this.animateWater.bind(this),eighth)
-          
-          // document.querySelector('[environment]').addEventListener('componentinitialized',evt => {
-            // if (evt.detail.name === "environment") {
-              setTimeout(() => {
-                  document.querySelector('.environmentGround').object3D.children[0].geometry = 
-                    document.querySelector('a-ring').object3D.children[1].geometry;
-                  // we want the dressing to have shadows, but we have to wait until after environment component has added the dressing
-                  document.querySelector('.environmentDressing').setAttribute('shadow', {receive:true, cast:true})
-                  // we have to steal back fog control from aframe-environment-component
-                  AFRAME.scenes[0].setAttribute('fog','color','black')
-              },1)
-            // }
-          // });
-          // return
-        }
+        },
+        hackEnvironment() {
+          setTimeout(() => {
+              document.querySelector('.environmentGround').object3D.children[0].geometry = 
+                document.querySelector('a-ring').object3D.children[1].geometry;
+              // we want the dressing to have shadows, but we have to wait until after environment component has added the dressing
+              document.querySelector('.environmentDressing').setAttribute('shadow', {receive:true, cast:true})
+              // we have to steal back fog control from aframe-environment-component
+              AFRAME.scenes[0].setAttribute('fog','color','black')
+          },1);
+        },
       })
     </script>
   </head>
