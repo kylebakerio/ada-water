@@ -7,6 +7,7 @@ This component give you a simple primitive that makes it easy to drop in and wor
 Full credit to [Ada Rose](https://twitter.com/adarosecannon). This component packages everything into one file in a very basic, crude way to make importing it and using it as simple as possible, but if you want to go through the course of building this yourself from first principles, check out their multi-part series on the topic: https://medium.com/samsung-internet-dev/generating-a-water-effect-part-1-svg-and-canvas-2ad07060cc0d
 
 ![image](https://user-images.githubusercontent.com/6391152/196059614-4b5144a4-882a-4105-86f1-1904d941fd3b.png)
+![image](https://user-images.githubusercontent.com/6391152/196288364-72c4c2b6-c4cd-4ce4-bbac-9740f2009dfd.png)
 
 
 ```html
