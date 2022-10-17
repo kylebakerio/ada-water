@@ -52,12 +52,13 @@ Added the primitive bindings you're most likely to want.
 | :---         |     :---:            |          :--- |
 | width        | 10 (meters)    | git status    |
 | length       | 10 (meters)       | git diff      |
-| side     |  one of ["front", "back", "double"]       | whether to be visible from under the water as well      |
-| base-color     | darkblue       | primary surface color      |
-| foam-color     | white       | secondary surface color     |
+| side     |  one of ["front", "back", "double"]       | whether the water surface should be visible from under the water as well      |
+| base-color     | darkblue       | primary surface color; this CAN be animated/changed      |
+| foam-color     | white       | secondary surface color; this CAN be animated/changed     |
 | opacity    | .5       | water opacity--note, this is baked into the shader, so cannot be changed after init!     |
 | voronoi-points     | 15       | changes the shape of the 'foam'; try e.g. 50. Note: can only be set at init! baked into the shader.      |
 
 
-
 You can also check ada-water.js for the up-to-date props in case I forget to update the readme when making a minor tweak.
+
+That ability to animated the colors is pretty handy, allowing you to make the illusion of the water responding to lighting conditions; see [this demo](/reactive-water.html) for an example of that behavior.

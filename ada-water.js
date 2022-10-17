@@ -12,7 +12,7 @@ AFRAME.registerPrimitive('a-water', {
     },
     scale: "1 1 1",//{x:20, y:20, z:20} , // note that the third value affects wave height scale, not the second
     rotation: "-90 0 0", 
-    material: { shader:'water', transparent:true, repeat:'100' },
+    // material: { shader:'water', transparent:true, repeat:'100' },
     shadow: {receive: true},
     position: '0 0 -1',
   },
@@ -22,6 +22,7 @@ AFRAME.registerPrimitive('a-water', {
     length: 'geometry.height',
     side: 'material.side',
     repeat: 'material.repeat',
+    opacity: 'water-helper.opacity',
     color: 'material.basecolor',
     'base-color': 'material.basecolor',
     'foam-color': 'material.foamcolor',
@@ -32,20 +33,40 @@ AFRAME.registerPrimitive('a-water', {
 AFRAME.registerComponent("water-helper", {
   schema: {
     voronoiPoints: { default: 15, type: 'number' },
+    opacity: { default: 0.5, type: 'number'},
   },
   async init() {
+    registerWaterShader(this.data.opacity);
+    this.el.setAttribute('material', { shader:'water', transparent:true, repeat:'100' });
     this.el.setAttribute('material', 'map', generateCausticCanvasTexture(this.data.voronoiPoints));
-  }
+  },
+  n: 0,
 });
 
-AFRAME.registerShader("water", {
-  schema: {
-    map: { type: "map", is: "uniform" },
-    basecolor: { type: "color", is: "uniform", default: "darkblue" },
-    foamcolor: { type: "color", is: "uniform", default: "white" },
-    time: { type: "time", is: "uniform" },
-  },
-  fragmentShader: `
+function registerWaterShader(opacity=.5) {
+  opacity = Math.min(.99,opacity);
+  opacity = Math.max(.01,opacity);
+  let shaderProps = {
+    schema: {
+      map: { type: "map", is: "uniform" },
+      basecolor: { type: "color", is: "uniform", default: "darkblue" },
+      foamcolor: { type: "color", is: "uniform", default: "white" },
+      time: { type: "time", is: "uniform" },
+    },
+    vertexShader: `
+      varying vec2 vUv;
+      uniform float time;
+
+      void main() {
+        vUv = uv;
+        vec3 newPos = position;
+        float t = time*0.001;
+        newPos.z += .05 * (cos(0.5*t+100.0*vUv.x) + sin(0.5*t+100.0*vUv.y));
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(newPos, 1.0);
+      }
+    `
+  };
+  shaderProps.fragmentShader = `
     varying vec2 vUv;
     uniform sampler2D map;
     uniform vec3 basecolor;
@@ -53,7 +74,7 @@ AFRAME.registerShader("water", {
     uniform float time;
 
     void main() {
-      gl_FragColor.a = 0.5;
+      gl_FragColor.a = ${opacity};
       vec3 color = texture2D( map,
         vUv * 100.0 +
         0.5*vec2(
@@ -77,20 +98,11 @@ AFRAME.registerShader("water", {
         )
       ).rgb;
       gl_FragColor.rgb = mix(basecolor * clamp(1.0 - color2, 0.9, 1.0), foamcolor, color.r);
-    }`,
-  vertexShader: `
-    varying vec2 vUv;
-    uniform float time;
-
-    void main() {
-      vUv = uv;
-      vec3 newPos = position;
-      float t = time*0.001;
-      newPos.z += .05 * (cos(0.5*t+100.0*vUv.x) + sin(0.5*t+100.0*vUv.y));
-      gl_Position = projectionMatrix * modelViewMatrix * vec4(newPos, 1.0);
     }
   `
-});
+  AFRAME.registerShader("water", shaderProps);
+}
+
 
 
 /*!
