@@ -61,7 +61,7 @@ Added the primitive bindings you're most likely to want.
 
 You can also check ada-water.js for the up-to-date props in case I forget to update the readme when making a minor tweak.
 
-That ability to animated the colors is pretty handy, allowing you to make the illusion of the water responding to lighting conditions; see [this demo](/reactive-water.html) for an example of that behavior.
+That ability to animated the colors is pretty handy, allowing you to make the illusion of the water responding to lighting conditions; see [this demo](https://ada-water.glitch.me/reactive-water.html) for an example of that behavior (behavior visibel in [this file]([this file](/reactive-water.html))).
 
 # roadmap
 - there are some improvements to this idea that ada demonstrated [here](https://a-toon-ocean.glitch.me/), however, as she noted in part 2 of her article on this, there was some bugginess with this feature when used in VR that she never resolved. Feel free to pick up the work there and make a pull request.
